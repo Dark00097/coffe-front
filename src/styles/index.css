@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', Roboto, Arial, sans-serif;
+  background-color: #f4f4f4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a, nav button {
+  color: white;
+  text-decoration: none;
+  margin-left: 15px;
+  padding: 8px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+nav button {
+  background-color: #dc3545;
+  border-radius: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 16px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.card h3 {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+.card p {
+  margin: 5px 0;
+}
+
+button, select, input, textarea {
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+select, input[type="text"], input[type="email"], input[type="password"], textarea {
+  background-color: #fff;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}

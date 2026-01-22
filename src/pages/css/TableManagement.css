@@ -1,0 +1,423 @@
+.table-management {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.table-management-header {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.table-management-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.table-management-subtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.table-management-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.table-management-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-management-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.table-management-form-group {
+  margin-bottom: 16px;
+}
+
+.table-management-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.table-management-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  outline: none;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.table-management-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.table-management-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #fff;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.table-management-button-primary {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.table-management-button-primary:hover {
+  background-color: #2563eb;
+}
+
+.table-management-button-secondary {
+  background-color: #f8fafc;
+  color: #475569;
+  border: 1px solid #d1d5db;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.table-management-button-secondary:hover {
+  background-color: #f1f5f9;
+}
+
+.table-management-button-active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.table-management-button-edit {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.table-management-button-edit:hover {
+  background-color: #d97706;
+}
+
+.table-management-button-delete {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.table-management-button-delete:hover {
+  background-color: #dc2626;
+}
+
+.table-management-table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.table-management-table-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.table-management-table-card {
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+  transition: box-shadow 0.2s;
+}
+
+.table-management-table-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-management-table-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.table-management-table-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.table-management-table-card-content {
+  margin-bottom: 12px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.table-management-table-card-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.table-management-status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.table-management-status-available {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.table-management-status-occupied {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.table-management-action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.table-management-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8fafc;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.table-management-text-center {
+  text-align: center;
+}
+
+.table-management-icon-medium {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.table-management-view-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.table-management-add-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.table-management-add-button:hover {
+  transform: scale(1.05);
+  background-color: #2563eb;
+}
+
+.table-management-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.table-management-modal {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.table-management-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: #64748b;
+  transition: background-color 0.2s;
+}
+
+.table-management-close-button:hover {
+  background-color: #f1f5f9;
+}
+
+.table-management-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-management-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.table-management-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.table-management-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+
+.table-management-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.table-management-empty-title {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.table-management-empty-text {
+  margin: 0;
+}
+
+.table-management-icon-small {
+  font-size: 0.8rem;
+}
+
+.table-management-icon-medium {
+  font-size: 1.2rem;
+}
+
+.table-management-icon-large {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .table-management-table-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-management-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .table-management-title {
+    font-size: 1.5rem;
+  }
+}

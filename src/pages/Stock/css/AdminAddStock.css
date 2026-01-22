@@ -1,0 +1,349 @@
+/* AdminAddStock.css */
+
+/* CSS Variables for consistent theming */
+:root {
+  --primary-color: #1e40af;
+  --primary-hover: #1d4ed8;
+  --secondary-color: #64748b;
+  --success-color: #15803d;
+  --warning-color: #d97706;
+  --danger-color: #dc2626;
+  --background-color: #f8fafc;
+  --surface-color: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Container */
+.admin-add-stock-container {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  padding: var(--spacing-lg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Title */
+.admin-add-stock-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2xl);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtitle */
+.admin-add-stock-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: var(--spacing-lg) 0 var(--spacing-md);
+}
+
+/* Form */
+.admin-add-stock-form {
+  background: var(--surface-color);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Form Group */
+.admin-add-stock-form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Label */
+.admin-add-stock-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Input */
+.admin-add-stock-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease;
+}
+
+.admin-add-stock-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+/* Button Group */
+.admin-add-stock-button-group {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Buttons */
+.admin-add-stock-submit-button,
+.admin-add-stock-cancel-button,
+.admin-add-stock-edit-button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.admin-add-stock-submit-button {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+}
+
+.admin-add-stock-submit-button:hover {
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-add-stock-cancel-button {
+  background: linear-gradient(135deg, var(--secondary-color), #475569);
+  color: white;
+}
+
+.admin-add-stock-cancel-button:hover {
+  background: linear-gradient(135deg, #475569, var(--secondary-color));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-add-stock-edit-button {
+  background: linear-gradient(135deg, var(--warning-color), #b45309);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+.admin-add-stock-edit-button:hover {
+  background: linear-gradient(135deg, #b45309, var(--warning-color));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Table Wrapper */
+.admin-add-stock-table-wrapper {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+/* Table */
+.admin-add-stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+/* Table Header */
+.admin-add-stock-table-header {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+}
+
+/* Table Row */
+.admin-add-stock-table-row:hover {
+  background-color: rgba(30, 64, 175, 0.02);
+}
+
+/* Table Cell */
+.admin-add-stock-table-cell {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Loading and No Data States */
+.admin-add-stock-loading,
+.admin-add-stock-no-data {
+  text-align: center;
+  padding: var(--spacing-xl);
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.admin-add-stock-loading {
+  background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(21, 128, 61, 0.1));
+  color: var(--primary-color);
+  border: 2px solid rgba(30, 64, 175, 0.2);
+  position: relative;
+}
+
+.admin-add-stock-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-lg);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.admin-add-stock-no-data {
+  color: var(--text-muted);
+  font-style: italic;
+  background: rgba(248, 250, 252, 0.5);
+  border: 2px dashed var(--border-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-add-stock-container {
+    padding: var(--spacing-md);
+  }
+
+  .admin-add-stock-title {
+    font-size: 2rem;
+  }
+
+  .admin-add-stock-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .admin-add-stock-form {
+    padding: var(--spacing-lg);
+  }
+
+  .admin-add-stock-table {
+    font-size: 0.75rem;
+  }
+
+  .admin-add-stock-table-header,
+  .admin-add-stock-table-cell {
+    padding: var(--spacing-sm);
+  }
+
+  .admin-add-stock-button-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .admin-add-stock-submit-button,
+  .admin-add-stock-cancel-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-add-stock-container {
+    padding: var(--spacing-sm);
+  }
+
+  .admin-add-stock-title {
+    font-size: 1.75rem;
+  }
+
+  .admin-add-stock-form {
+    padding: var(--spacing-md);
+  }
+
+  .admin-add-stock-table-header,
+  .admin-add-stock-table-cell {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .admin-add-stock-loading::after {
+    animation: none;
+  }
+}
+
+/* Focus styles for better accessibility */
+.admin-add-stock-input:focus,
+.admin-add-stock-submit-button:focus,
+.admin-add-stock-cancel-button:focus,
+.admin-add-stock-edit-button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.admin-add-stock-table-header:focus,
+.admin-add-stock-table-cell:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
+}
+
+/* Print styles */
+@media print {
+  .admin-add-stock-container {
+    background: white;
+    padding: 0;
+  }
+
+  .admin-add-stock-form {
+    box-shadow: none;
+    border: 1px solid #000;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .admin-add-stock-table-wrapper {
+    overflow-y: visible;
+  }
+
+  .admin-add-stock-submit-button,
+  .admin-add-stock-cancel-button,
+  .admin-add-stock-edit-button {
+    display: none;
+  }
+}
