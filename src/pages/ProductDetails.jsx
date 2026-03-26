@@ -16,6 +16,7 @@ import {
   RestaurantMenuOutlined,
 } from '@mui/icons-material';
 import './css/ProductDetails.css';
+import { appendImageQuery } from '../utils/imageUrl';
 
 function ProductDetails({ addToCart }) {
   const { id } = useParams();
@@ -439,7 +440,7 @@ function ProductDetails({ addToCart }) {
             <motion.img
               layoutId={transitionData && transitionData.itemId === product.id ? `product-image-${product.id}` : undefined}
               src={imageSrc}
-              srcSet={`${imageSrc}?w=400 1x, ${imageSrc}?w=800 2x`}
+              srcSet={`${appendImageQuery(imageSrc, 'w=400')} 1x, ${appendImageQuery(imageSrc, 'w=800')} 2x`}
               alt={product.name || 'Product'}
               className="product-details-product-image"
               loading="eager"

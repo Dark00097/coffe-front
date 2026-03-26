@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { toast } from 'react-toastify';
 import { Coffee } from 'lucide-react';
+import { appendImageQuery } from '../utils/imageUrl';
 
 function TopCategories() {
   const [topCategories, setTopCategories] = useState([]);
@@ -223,8 +224,8 @@ function TopCategories() {
                     <img
                       src={category.image_url}
                       srcSet={`
-                        ${category.image_url}?w=120 1x,
-                        ${category.image_url}?w=240 2x
+                        ${appendImageQuery(category.image_url, 'w=120')} 1x,
+                        ${appendImageQuery(category.image_url, 'w=240')} 2x
                       `}
                       alt={category.name}
                       style={styles.topCategoryImage}

@@ -15,6 +15,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 import './css/CartModal.css';
+import { appendImageQuery } from '../utils/imageUrl';
 
 const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, supplementSelections, handleQuantityChange, handleSupplementChange, currency }) => {
   const imageSrc = useMemo(() => {
@@ -40,7 +41,7 @@ const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, suppleme
         <div className="cart-modal-item-image">
           <img
             src={imageSrc}
-            srcSet={`${imageSrc}?w=56 1x, ${imageSrc}?w=112 2x`}
+            srcSet={`${appendImageQuery(imageSrc, 'w=56')} 1x, ${appendImageQuery(imageSrc, 'w=112')} 2x`}
             alt={item.name || 'Article'}
             className="cart-modal-item-img"
             loading="lazy"
