@@ -9,6 +9,7 @@ import TopCategories from '../components/TopCategories';
 import BestSellers from '../components/BestSellers';
 import debounce from 'lodash/debounce';
 import './css/Home.css';
+import { appendImageQuery } from '../utils/imageUrl';
 
 function Home({ addToCart }) {
   const [menuItems, setMenuItems] = useState([]);
@@ -152,8 +153,8 @@ function Home({ addToCart }) {
             <img
               src={category.image_url}
               srcSet={`
-                ${category.image_url}?w=72 1x,
-                ${category.image_url}?w=144 2x
+                ${appendImageQuery(category.image_url, 'w=72')} 1x,
+                ${appendImageQuery(category.image_url, 'w=144')} 2x
               `}
               alt={category.name}
               className="home-category-image"

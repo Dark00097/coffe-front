@@ -7,6 +7,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import { debounce } from 'lodash';
 import { toast } from 'react-toastify';
+import { appendImageQuery } from '../utils/imageUrl';
 
 function MenuItemCard({ item, onAddToCart, onView, isManager }) {
   const [screenSize, setScreenSize] = useState({
@@ -719,7 +720,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
           {!imageLoaded && <div style={styles.loadingPlaceholder} />}
           <img
             src={imageSrc}
-            srcSet={`${imageSrc}?w=180 1x, ${imageSrc}?w=360 2x`}
+            srcSet={`${appendImageQuery(imageSrc, 'w=180')} 1x, ${appendImageQuery(imageSrc, 'w=360')} 2x`}
             alt={item.name || 'Item'}
             style={styles.image}
             loading="lazy"
