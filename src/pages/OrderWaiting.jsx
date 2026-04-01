@@ -142,7 +142,6 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
     try {
       const response = await api.getOrder(orderId, {
         headers: {
-          'Cache-Control': 'no-cache',
           'X-Session-Id': sessionId,
         },
       });
