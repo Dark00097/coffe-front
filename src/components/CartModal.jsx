@@ -228,9 +228,10 @@ function CartModal({
 
     let localSessionId = localStorage.getItem('sessionId');
     if (!localSessionId) {
-      localSessionId = uuidv4();
+      localSessionId = `guest-${uuidv4()}`;
       localStorage.setItem('sessionId', localSessionId);
     }
+    api.defaults.headers.common['X-Session-Id'] = localSessionId;
   }, [isOpen]);
 
   const aggregatedCart = useMemo(() => {
@@ -339,9 +340,10 @@ function CartModal({
 
       let localSessionId = localStorage.getItem('sessionId');
       if (!localSessionId) {
-        localSessionId = uuidv4();
+        localSessionId = `guest-${uuidv4()}`;
         localStorage.setItem('sessionId', localSessionId);
       }
+      api.defaults.headers.common['X-Session-Id'] = localSessionId;
 
       const orderItems = aggregatedCart.map((item) => {
         let unitPrice = parseFloat(item.sale_price || item.unit_price || item.regular_price) || 0;

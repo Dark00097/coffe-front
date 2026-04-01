@@ -18,6 +18,8 @@ api.interceptors.request.use(
     const token = localStorage.getItem('jwt_token');
     const sessionId = localStorage.getItem('sessionId');
     const deviceId = localStorage.getItem('deviceId');
+    const explicitSessionId = config.headers?.['X-Session-Id'] || config.headers?.['x-session-id'];
+    const explicitDeviceId = config.headers?.['X-Device-Id'] || config.headers?.['x-device-id'];
 
     if (token && typeof token === 'string' && token !== 'null' && token !== 'undefined' && token.trim()) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,13 +29,17 @@ api.interceptors.request.use(
       delete config.headers.Authorization;
     }
 
-    if (sessionId && typeof sessionId === 'string' && sessionId.trim()) {
+    if (explicitSessionId && typeof explicitSessionId === 'string' && explicitSessionId.trim()) {
+      config.headers['X-Session-Id'] = explicitSessionId.trim();
+    } else if (sessionId && typeof sessionId === 'string' && sessionId.trim()) {
       config.headers['X-Session-Id'] = sessionId;
     } else {
       delete config.headers['X-Session-Id'];
     }
 
-    if (deviceId && typeof deviceId === 'string' && deviceId.trim()) {
+    if (explicitDeviceId && typeof explicitDeviceId === 'string' && explicitDeviceId.trim()) {
+      config.headers['X-Device-Id'] = explicitDeviceId.trim();
+    } else if (deviceId && typeof deviceId === 'string' && deviceId.trim()) {
       config.headers['X-Device-Id'] = deviceId;
     } else {
       delete config.headers['X-Device-Id'];

@@ -107,11 +107,21 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
   );
 
   useEffect(() => {
-    if (!state?.sessionId && !localStorage.getItem('sessionId')) {
-      console.warn('Aucun ID de session trouvé dans l\'état ou localStorage, généré un nouveau :', sessionId, 'timestamp :', new Date().toISOString());
-      localStorage.setItem('sessionId', sessionId);
-      api.defaults.headers.common['X-Session-Id'] = sessionId;
+    try {
+      const storedSessionId = localStorage.getItem('sessionId');
+      if (storedSessionId !== sessionId) {
+        console.warn('Synchronisation de la session de commande :', {
+          storedSessionId,
+          activeSessionId: sessionId,
+          orderId,
+          timestamp: new Date().toISOString(),
+        });
+        localStorage.setItem('sessionId', sessionId);
+      }
+    } catch (error) {
+      console.warn('Impossible de synchroniser sessionId dans localStorage :', error.message, { timestamp: new Date().toISOString() });
     }
+    api.defaults.headers.common['X-Session-Id'] = sessionId;
     console.log('OrderWaiting initialisé avec sessionId :', sessionId, 'orderId :', orderId, 'timestamp :', new Date().toISOString());
   }, [sessionId, orderId]);
 
@@ -130,7 +140,12 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
     }
 
     try {
-      const response = await api.getOrder(orderId, { headers: { 'Cache-Control': 'no-cache' } });
+      const response = await api.getOrder(orderId, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'X-Session-Id': sessionId,
+        },
+      });
       console.log('Détails de la commande récupérés :', response.data, 'timestamp :', new Date().toISOString());
       debouncedSetOrderDetails(response.data);
       setIsApproved(!!response.data.approved);
@@ -142,18 +157,23 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
         message: error.response?.data?.error || error.message,
         timestamp: new Date().toISOString(),
       });
-      if (error.response?.status === 403) {
+      const backendMessage = error.response?.data?.error;
+      if (error.response?.status === 400 && backendMessage) {
+        setErrorMessage(backendMessage);
+      } else if (error.response?.status === 403) {
         setErrorMessage('Accès refusé : Vous n\'êtes pas autorisé à voir cette commande.');
       } else if (error.response?.status === 404) {
         setErrorMessage('Commande introuvable.');
       } else if (error.response?.status === 500) {
         setErrorMessage('Erreur du serveur. Veuillez réessayer plus tard.');
+      } else if (backendMessage) {
+        setErrorMessage(backendMessage);
       } else {
         setErrorMessage('Échec du chargement des détails de la commande. Vérifiez votre connexion.');
       }
       setIsLoading(false);
     }
-  }, [orderId, debouncedSetOrderDetails]);
+  }, [orderId, sessionId, debouncedSetOrderDetails]);
 
   useEffect(() => {
     if (hasHandledCheckoutStatus.current || !checkoutStatus) {
