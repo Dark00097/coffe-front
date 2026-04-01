@@ -133,6 +133,29 @@ function App() {
       setSessionId(fallbackSessionId);
       api.defaults.headers.common['X-Session-Id'] = fallbackSessionId;
 
+      const ensureGuestSession = (preferredSessionId = fallbackSessionId) => {
+        const nextGuestSessionId =
+          typeof preferredSessionId === 'string' &&
+          preferredSessionId.trim() &&
+          preferredSessionId.startsWith('guest-')
+            ? preferredSessionId.trim()
+            : `guest-${uuidv4()}`;
+
+        try {
+          localStorage.setItem('sessionId', nextGuestSessionId);
+        } catch (err) {
+          console.warn('Failed to set sessionId in localStorage:', err.message, { timestamp: new Date().toISOString() });
+        }
+
+        fallbackSessionId = nextGuestSessionId;
+        setSessionId(nextGuestSessionId);
+        api.defaults.headers.common['X-Session-Id'] = nextGuestSessionId;
+        api.defaults.headers.common['X-Device-Id'] = storedDeviceId;
+        refreshSocketAuth({ token: null, sessionId: nextGuestSessionId });
+
+        return nextGuestSessionId;
+      };
+
       const socketCleanup = initSocket(
         () => {},
         () => {},
@@ -171,18 +194,9 @@ function App() {
           if (!token || typeof token !== 'string' || token === 'null' || token === 'undefined') {
             console.warn('No valid token found during auth check', { timestamp: new Date().toISOString() });
             localStorage.removeItem('jwt_token');
-            localStorage.removeItem('sessionId');
-            delete api.defaults.headers.common['X-Session-Id'];
+            delete api.defaults.headers.common['Authorization'];
             setUser(null);
-            const newSessionId = `guest-${uuidv4()}`;
-            try {
-              localStorage.setItem('sessionId', newSessionId);
-            } catch (err) {
-              console.warn('Failed to set sessionId in localStorage:', err.message, { timestamp: new Date().toISOString() });
-            }
-            setSessionId(newSessionId);
-            api.defaults.headers.common['X-Session-Id'] = newSessionId;
-            api.defaults.headers.common['X-Device-Id'] = storedDeviceId;
+            ensureGuestSession(fallbackSessionId);
             return;
           }
           console.log('Checking auth with token:', token.substring(0, 10) + '...', { deviceId: storedDeviceId, timestamp: new Date().toISOString() });
@@ -201,18 +215,9 @@ function App() {
         } catch (err) {
           console.error('Error checking auth:', err.response?.data || err.message, { timestamp: new Date().toISOString() });
           localStorage.removeItem('jwt_token');
-          localStorage.removeItem('sessionId');
-          delete api.defaults.headers.common['X-Session-Id'];
+          delete api.defaults.headers.common['Authorization'];
           setUser(null);
-          const newSessionId = `guest-${uuidv4()}`;
-          try {
-            localStorage.setItem('sessionId', newSessionId);
-          } catch (err) {
-            console.warn('Failed to set sessionId in localStorage:', err.message, { timestamp: new Date().toISOString() });
-          }
-          setSessionId(newSessionId);
-          api.defaults.headers.common['X-Session-Id'] = newSessionId;
-          api.defaults.headers.common['X-Device-Id'] = storedDeviceId;
+          ensureGuestSession(fallbackSessionId);
         }
       };
 

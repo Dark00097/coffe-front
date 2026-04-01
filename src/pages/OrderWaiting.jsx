@@ -46,9 +46,22 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
   const hasInteracted = useRef(false);
   const hasHandledCheckoutStatus = useRef(false);
   const factureRef = useRef(null);
+  const persistedOrderSessionId = (() => {
+    try {
+      return orderId ? localStorage.getItem(`order-session-${orderId}`) : null;
+    } catch (error) {
+      console.warn('Impossible de lire la session de commande persistée :', error.message, { timestamp: new Date().toISOString() });
+      return null;
+    }
+  })();
 
   // Prioritize session ID from navigation state
-  const sessionId = state?.sessionId || localStorage.getItem('sessionId') || propSessionId || `guest-${uuidv4()}`;
+  const sessionId =
+    state?.sessionId ||
+    persistedOrderSessionId ||
+    localStorage.getItem('sessionId') ||
+    propSessionId ||
+    `guest-${uuidv4()}`;
   const isMounted = useRef(false);
 
   // Fetch currency from theme
@@ -117,6 +130,9 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
           timestamp: new Date().toISOString(),
         });
         localStorage.setItem('sessionId', sessionId);
+      }
+      if (orderId) {
+        localStorage.setItem(`order-session-${orderId}`, sessionId);
       }
     } catch (error) {
       console.warn('Impossible de synchroniser sessionId dans localStorage :', error.message, { timestamp: new Date().toISOString() });

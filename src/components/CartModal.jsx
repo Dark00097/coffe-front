@@ -397,6 +397,12 @@ function CartModal({
       const createdOrderId = response.data?.orderId;
       if (!response.data?.orderId) throw new Error('Échec de la création de la commande');
 
+      try {
+        localStorage.setItem(`order-session-${createdOrderId}`, localSessionId);
+      } catch (error) {
+        console.warn('Impossible de sauvegarder la session de commande :', error.message);
+      }
+
       socket.emit('newOrder', {
         id: createdOrderId,
         ...orderData,
