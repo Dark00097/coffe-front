@@ -79,7 +79,7 @@ function CategoryMenu({ addToCart }) {
         const imageUrl = categoryData?.image_url 
           ? categoryData.image_url.startsWith('http') 
             ? categoryData.image_url 
-            : `${import.meta.env.VITE_API_URL || 'https://lacoupole-back.onrender.com'}${categoryData.image_url}`
+            : `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}${categoryData.image_url}`
           : null;
         setCategoryImage(imageUrl);
         setCategories(categoriesData);

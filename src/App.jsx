@@ -87,7 +87,7 @@ function App() {
       favicon.rel = 'icon';
       document.head.appendChild(favicon);
     }
-    const baseApiUrl = import.meta.env.VITE_API_URL || 'https://coffe-back-production-e0b2.up.railway.app';
+    const baseApiUrl = import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com';
     const faviconUrl = themeData.favicon_url
       ? (isAbsoluteUrl(themeData.favicon_url)
           ? themeData.favicon_url

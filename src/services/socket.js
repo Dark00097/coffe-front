@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com';
 
 let socket = null;
 let socketConnected = false;

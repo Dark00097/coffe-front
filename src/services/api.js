@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL || 'https://lacoupole-back.onrender.com'}/api`,
+  baseURL: `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -81,7 +81,7 @@ api.interceptors.response.use(
         }
         console.log('Attempting token refresh with:', token.substring(0, 10) + '...');
         const res = await axios.post(
-          `${import.meta.env.VITE_API_URL || 'https://lacoupole-back.onrender.com'}/api/refresh-token`,
+          `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}/api/refresh-token`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

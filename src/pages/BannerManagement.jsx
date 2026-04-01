@@ -29,7 +29,7 @@ function BannerManagement() {
     // If image_url is a full Cloudinary URL, use it directly; otherwise, prepend the API base URL
     return imageUrl.startsWith('http')
       ? `${imageUrl}?v=${Date.now()}`
-      : `${import.meta.env.VITE_API_URL || 'https://lacoupole-back.onrender.com'}${imageUrl}?v=${Date.now()}`;
+      : `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}${imageUrl}?v=${Date.now()}`;
   };
 
   useEffect(() => {
