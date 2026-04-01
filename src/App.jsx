@@ -147,6 +147,7 @@ function App() {
             console.warn('Socket not connected, cannot broadcast orderApproved:', data, { timestamp: new Date().toISOString() });
           }
         },
+        () => {},
         handleNewNotification
       );
       const socketInstance = getSocket();

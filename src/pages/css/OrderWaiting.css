@@ -225,6 +225,26 @@
   color: #1e40af;
 }
 
+.order-waiting-payment-pending {
+  background: #fff7ed;
+  border: 1px solid #fb923c;
+}
+
+.order-waiting-payment-pending .order-waiting-alert-title,
+.order-waiting-payment-pending .order-waiting-alert-text {
+  color: #9a3412;
+}
+
+.order-waiting-payment-success {
+  background: #ecfdf5;
+  border: 1px solid #10b981;
+}
+
+.order-waiting-payment-success .order-waiting-alert-title,
+.order-waiting-payment-success .order-waiting-alert-text {
+  color: #065f46;
+}
+
 /* Items Section */
 .order-waiting-items-section {
   margin-bottom: 20px;

@@ -15,6 +15,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import { v4 as uuidv4 } from 'uuid';
 import React from 'react';
 import './css/CartModal.css';
+import { appendImageQuery } from '../utils/imageUrl';
 
 const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, supplementSelections, handleQuantityChange, handleSupplementChange, currency }) => {
   const imageSrc = useMemo(() => {
@@ -40,7 +41,7 @@ const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, suppleme
         <div className="cart-modal-item-image">
           <img
             src={imageSrc}
-            srcSet={`${imageSrc}?w=56 1x, ${imageSrc}?w=112 2x`}
+            srcSet={`${appendImageQuery(imageSrc, 'w=56')} 1x, ${appendImageQuery(imageSrc, 'w=112')} 2x`}
             alt={item.name || 'Article'}
             className="cart-modal-item-img"
             loading="lazy"
@@ -138,6 +139,7 @@ function CartModal({
   const [supplementSelections, setSupplementSelections] = useState({});
   const [itemSupplements, setItemSupplements] = useState({});
   const [breakfastOptions, setBreakfastOptions] = useState({});
+  const [paymentMethod, setPaymentMethod] = useState('cash');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -187,6 +189,7 @@ function CartModal({
       setItemSupplements({});
       setSupplementSelections({});
       setBreakfastOptions({});
+      setPaymentMethod('cash');
       setNotes('');
       return;
     }
@@ -381,17 +384,19 @@ function CartModal({
         order_type: orderType,
         table_id: orderType === 'local' ? parseInt(tableId) : null,
         delivery_address: orderType === 'delivery' ? deliveryAddress.trim() : null,
-        session_id: sessionId,
+        session_id: localSessionId,
+        payment_method: paymentMethod,
         notes: notes.trim() || null,
       };
 
       const response = await api.submitOrder(orderData, {
-        headers: { 'X-Session-Id': sessionId },
+        headers: { 'X-Session-Id': localSessionId },
       });
+      const createdOrderId = response.data?.orderId;
       if (!response.data?.orderId) throw new Error('Échec de la création de la commande');
 
       socket.emit('newOrder', {
-        id: response.data.orderId,
+        id: createdOrderId,
         ...orderData,
         created_at: new Date().toISOString(),
         approved: 0,
@@ -403,10 +408,11 @@ function CartModal({
       setTableId('');
       setTableSearch('');
       setDeliveryAddress('');
+      setPaymentMethod('cash');
       setNotes('');
       toast.success('Commande passée avec succès !');
 
-      navigate(`/order-waiting/${response.data.orderId}`, { state: { sessionId } });
+      navigate(`/order-waiting/${createdOrderId}`, { state: { sessionId: localSessionId } });
     } catch (error) {
       const message = error.response?.data?.error || error.message || 'Échec de la commande';
       toast.error(message);
@@ -414,7 +420,7 @@ function CartModal({
       submissionLockRef.current = null;
       setIsSubmitting(false);
     }
-  }, [orderType, tableId, deliveryAddress, aggregatedCart, supplementSelections, total, clearCart, navigate, validateOrder, breakfastOptions, sessionId, socket, notes]);
+  }, [orderType, tableId, deliveryAddress, aggregatedCart, supplementSelections, total, clearCart, navigate, validateOrder, breakfastOptions, socket, notes, paymentMethod]);
 
   const handleClose = useCallback(() => {
     setIsClosing(true);
@@ -422,6 +428,7 @@ function CartModal({
       setSupplementSelections({});
       setTableId('');
       setTableSearch('');
+      setPaymentMethod('cash');
       setNotes('');
       setDragOffset(0);
       setIsDragging(false);
@@ -668,6 +675,20 @@ function CartModal({
                     />
                   </div>
                 )}
+
+                <div className="cart-modal-form-group">
+                  <label className="cart-modal-label">
+                    Mode de paiement
+                  </label>
+                  <select
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    value={paymentMethod}
+                    className="cart-modal-select"
+                  >
+                    <option value="cash">Paiement en especes</option>
+                    <option value="stripe">Carte bancaire (Stripe)</option>
+                  </select>
+                </div>
 
                 <div className="cart-modal-form-group">
                   <label className="cart-modal-label">

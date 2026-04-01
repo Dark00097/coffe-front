@@ -27,13 +27,16 @@ const safeParseInt = (value, defaultValue = 0) => {
 
 function OrderWaiting({ sessionId: propSessionId, socket }) {
   const { orderId } = useParams();
-  const { state } = useLocation();
+  const location = useLocation();
+  const { state } = location;
   const navigate = useNavigate();
+  const checkoutStatus = new URLSearchParams(location.search).get('checkout');
   const [orderDetails, setOrderDetails] = useState(null);
   const [isApproved, setIsApproved] = useState(false);
   const [isCancelled, setIsCancelled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessingApproval, setIsProcessingApproval] = useState(false);
+  const [isStartingPayment, setIsStartingPayment] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [itemsVisible, setItemsVisible] = useState(false);
@@ -41,6 +44,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
   const audioRef = useRef(null);
   const hasPlayedSound = useRef(false);
   const hasInteracted = useRef(false);
+  const hasHandledCheckoutStatus = useRef(false);
   const factureRef = useRef(null);
 
   // Prioritize session ID from navigation state
@@ -150,6 +154,21 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
       setIsLoading(false);
     }
   }, [orderId, debouncedSetOrderDetails]);
+
+  useEffect(() => {
+    if (hasHandledCheckoutStatus.current || !checkoutStatus) {
+      return;
+    }
+
+    if (checkoutStatus === 'success') {
+      toast.success('Paiement Stripe complete. Verification en cours...');
+      fetchOrder();
+    } else if (checkoutStatus === 'cancelled') {
+      toast.info('Paiement Stripe annule. Vous pouvez reessayer.');
+    }
+
+    hasHandledCheckoutStatus.current = true;
+  }, [checkoutStatus, fetchOrder]);
 
   const playSound = async () => {
     if (!audioRef.current) {
@@ -301,6 +320,26 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
     [orderId, sessionId, debouncedSetOrderDetails, fetchOrder]
   );
 
+  const onOrderPaymentUpdated = useCallback(
+    (data) => {
+      if (parseInt(data.orderId) !== parseInt(orderId)) {
+        return;
+      }
+
+      debouncedSetOrderDetails((prev) => ({
+        ...prev,
+        payment_status: data.paymentStatus || prev?.payment_status || 'pending',
+        payment_method: data.paymentMethod || prev?.payment_method || 'stripe',
+      }));
+
+      if (data.paymentStatus === 'paid') {
+        toast.success(`Paiement confirme pour la commande #${orderId}`);
+        fetchOrder();
+      }
+    },
+    [orderId, debouncedSetOrderDetails, fetchOrder]
+  );
+
   useEffect(() => {
     if (!sessionId) {
       console.warn('Aucun ID de session fourni, génération d\'un nouveau', { timestamp: new Date().toISOString() });
@@ -364,6 +403,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
       socket.on('orderApproved', onOrderApproved);
       socket.on('orderUpdate', onOrderUpdate);
       socket.on('orderCancelled', onOrderCancelled);
+      socket.on('orderPaymentUpdated', onOrderPaymentUpdated);
       socket.on('connect_error', (error) => {
         console.error('Erreur de connexion socket dans OrderWaiting :', error.message, { timestamp: new Date().toISOString() });
         toast.warn('Connexion aux mises à jour en temps réel perdue. Nouvelle tentative...');
@@ -405,6 +445,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
       socket.off('orderApproved', onOrderApproved);
       socket.off('orderUpdate', onOrderUpdate);
       socket.off('orderCancelled', onOrderCancelled);
+      socket.off('orderPaymentUpdated', onOrderPaymentUpdated);
       socket.off('connect_error');
       socket.off('reconnect');
       clearInterval(pollInterval);
@@ -413,7 +454,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
       window.removeEventListener('keydown', handleInteraction);
       console.log('Nettoyage OrderWaiting terminé pour sessionId :', sessionId, { timestamp: new Date().toISOString() });
     };
-  }, [fetchOrder, sessionId, socket, onOrderApproved, onOrderUpdate, onOrderCancelled, isApproved, isCancelled, orderId, isProcessingApproval]);
+  }, [fetchOrder, sessionId, socket, onOrderApproved, onOrderUpdate, onOrderCancelled, onOrderPaymentUpdated, isApproved, isCancelled, orderId, isProcessingApproval]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -444,6 +485,35 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
   const handleReturnHome = () => {
     setIsVisible(false);
     setTimeout(() => navigate('/'), 200);
+  };
+
+  const handleStartStripeCheckout = async () => {
+    if (!orderDetails || isStartingPayment) {
+      return;
+    }
+
+    try {
+      setIsStartingPayment(true);
+      const response = await api.createStripeCheckoutSession(
+        { order_id: parseInt(orderId, 10), session_id: sessionId },
+        { headers: { 'X-Session-Id': sessionId } }
+      );
+
+      const checkoutUrl = response.data?.url;
+      if (!checkoutUrl) {
+        throw new Error('Impossible de demarrer Stripe Checkout');
+      }
+
+      window.location.assign(checkoutUrl);
+    } catch (error) {
+      const message =
+        error.response?.data?.error ||
+        error.message ||
+        'Echec du demarrage du paiement Stripe';
+      toast.error(message);
+    } finally {
+      setIsStartingPayment(false);
+    }
   };
 
   const handleCopyUrl = () => {
@@ -679,6 +749,9 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
 
   const currentUrl = window.location.href;
   const orderTime = new Date(orderDetails.created_at || Date.now()).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  const isStripeOrder = orderDetails.payment_method === 'stripe';
+  const isPaymentPaid = orderDetails.payment_status === 'paid';
+  const canRetryStripePayment = isStripeOrder && !isPaymentPaid && !isCancelled;
 
   return (
     <div className="order-waiting-container">
@@ -714,6 +787,32 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
               : 'Votre commande est en cours d\'examen par notre personnel.'}
           </p>
         </div>
+
+        {isStripeOrder && (
+          <div className={`order-waiting-alert ${isPaymentPaid ? 'order-waiting-payment-success' : 'order-waiting-payment-pending'}`}>
+            <div>
+              <div className="order-waiting-alert-title">Paiement Stripe</div>
+              <div className="order-waiting-alert-text">
+                {isPaymentPaid
+                  ? 'Paiement confirme.'
+                  : 'Paiement en attente. Vous pouvez payer maintenant ou reessayer si le paiement a ete annule.'}
+              </div>
+              {canRetryStripePayment && (
+                <div style={{ marginTop: '12px' }}>
+                  <button
+                    onClick={handleStartStripeCheckout}
+                    className="order-waiting-button"
+                    disabled={isStartingPayment}
+                  >
+                    {isStartingPayment
+                      ? 'Ouverture de Stripe...'
+                      : `Payer maintenant - ${safeParseFloat(orderDetails.total_price || 0).toFixed(2)} ${currency}`}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {orderDetails.delivery_address && (
           <div className="order-waiting-alert">
@@ -841,6 +940,9 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
       <div className="order-waiting-url-section">
         <p className="order-waiting-url-text">URL de la commande actuelle :</p>
         <p className="order-waiting-url-value" title={currentUrl}>{currentUrl}</p>
+        <p className="order-waiting-instruction">
+          Pour des raisons de securite, cette page doit etre rouverte depuis le meme navigateur ou appareil.
+        </p>
         <p className="order-waiting-instruction">
           Veuillez sauvegarder cette URL pour suivre l'état de votre commande ultérieurement, par exemple, lors du paiement ou pour vérifier les mises à jour. Nous vous recommandons de la copier dans un endroit sécurisé pour votre commodité.
         </p>

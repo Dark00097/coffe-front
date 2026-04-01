@@ -157,11 +157,12 @@ api.updateSupplementForMenuItem = (menuItemId, supplementId, data) => api.put(`/
 api.deleteSupplementFromMenuItem = (menuItemId, supplementId, data) => api.delete(`/menu-items/${menuItemId}/supplements/${supplementId}`, { data });
 
 // Order API methods
-api.submitOrder = (data) => api.post('/orders', data);
+api.submitOrder = (data, config = {}) => api.post('/orders', data, config);
 api.submitStaffOrder = (data) => api.post('/orders', { ...data, source: 'staff-console' });
 api.approveOrder = (id) => api.post(`/orders/${id}/approve`);
 api.cancelOrder = (id, data) => api.post(`/orders/${id}/cancel`, data);
-api.getOrder = (id) => api.get(`/orders/${id}`);
+api.getOrder = (id, config = {}) => api.get(`/orders/${id}`, config);
+api.createStripeCheckoutSession = (data, config = {}) => api.post('/stripe/checkout-sessions', data, config);
 api.getSession = () => api.get('/session');
 
 // Banner API methods

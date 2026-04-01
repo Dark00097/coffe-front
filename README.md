@@ -1,12 +1,33 @@
-# React + Vite
+# Coffee Ordering Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Environment
 
-Currently, two official plugins are available:
+Create `coffee-ordering-frontend/.env` from `coffee-ordering-frontend/.env.example`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Required variables:
 
-## Expanding the ESLint configuration
+- `VITE_API_URL`: public base URL of the backend, for example `https://api.example.com`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stripe flow
+
+This frontend uses Stripe-hosted Checkout.
+
+- Customers choose `cash` or `stripe` in the cart.
+- Stripe orders are created first in your backend.
+- The customer completes payment from the order waiting page.
+- After Stripe redirects back, the page refreshes order state and waits for webhook confirmation.
+
+No Stripe publishable key is required in the frontend because card entry is handled on Stripe-hosted Checkout.
+
+## Run
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
