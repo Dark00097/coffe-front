@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { API_ORIGIN } from '../config/runtime';
 
+const BANNER_UPLOAD_TIMEOUT_MS = 120000;
+
 const api = axios.create({
   baseURL: `${API_ORIGIN}/api`,
   headers: {
@@ -175,8 +177,8 @@ api.getSession = () => api.get('/session');
 // Banner API methods
 api.getBanners = (params) => api.get('/banners', { params });
 api.getEnabledBanners = () => api.get('/banners/enabled');
-api.addBanner = (data) => api.post('/banners', data);
-api.updateBanner = (id, data) => api.put(`/banners/${id}`, data);
+api.addBanner = (data) => api.post('/banners', data, { timeout: BANNER_UPLOAD_TIMEOUT_MS });
+api.updateBanner = (id, data) => api.put(`/banners/${id}`, data, { timeout: BANNER_UPLOAD_TIMEOUT_MS });
 api.deleteBanner = (id, data) => api.delete(`/banners/${id}`, { data });
 
 // Breakfast API methods
