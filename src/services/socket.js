@@ -33,7 +33,8 @@ export const initSocket = (
     reconnectionDelayMax: 5000,
     randomizationFactor: 0.5,
     path: '/socket.io/',
-    transports: ['websocket', 'polling'],
+    // Keep realtime working behind Vercel rewrites even when WS upgrade fails.
+    transports: ['polling'],
     auth: {
       token: localStorage.getItem('jwt_token') || null,
       sessionId: localStorage.getItem('sessionId') || null,
