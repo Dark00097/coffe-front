@@ -55,6 +55,7 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [theme, setTheme] = useState(null);
   const [isSocketReady, setIsSocketReady] = useState(false);
+  const [isThemeReady, setIsThemeReady] = useState(false);
 
   const defaultTheme = {
     primary_color: '#ff6b35',
@@ -257,6 +258,8 @@ function App() {
           toast.error(error.response?.data?.error || 'Failed to load theme, applying default theme');
           setTheme(defaultTheme);
           applyTheme(defaultTheme);
+        } finally {
+          setIsThemeReady(true);
         }
       };
 
@@ -536,6 +539,10 @@ function App() {
 
   if (error) {
     return <div style={{ textAlign: 'center', padding: '20px', color: 'red' }}>{error}</div>;
+  }
+
+  if (!isThemeReady) {
+    return <div style={{ minHeight: '100vh', backgroundColor: '#ffffff' }} />;
   }
 
   // Helper flags to control layout chrome
