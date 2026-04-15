@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/backend/:path*",
+      "destination": "http://72.61.177.50:5001/:path*"
     }
   ]
 }
