@@ -5,6 +5,7 @@ import { api } from './services/api';
 import { initSocket, getSocket, refreshSocketAuth } from './services/socket';
 import { v4 as uuidv4 } from 'uuid';
 import { TransitionProvider } from './contexts/TransitionContext';
+import { API_ORIGIN } from './config/runtime';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
@@ -87,7 +88,7 @@ function App() {
       favicon.rel = 'icon';
       document.head.appendChild(favicon);
     }
-    const baseApiUrl = import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com';
+    const baseApiUrl = API_ORIGIN;
     const faviconUrl = themeData.favicon_url
       ? (isAbsoluteUrl(themeData.favicon_url)
           ? themeData.favicon_url

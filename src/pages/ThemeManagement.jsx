@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { toast } from 'react-toastify';
+import { API_ORIGIN } from '../config/runtime';
 import {
   Box,
   Button,
@@ -34,7 +35,7 @@ function ThemeManagement() {
     // If image_url is a full Cloudinary URL, use it directly; otherwise, prepend the API base URL
     return imageUrl.startsWith('http')
       ? `${imageUrl}?v=${Date.now()}`
-      : `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}${imageUrl}?v=${Date.now()}`;
+      : `${API_ORIGIN}${imageUrl}?v=${Date.now()}`;
   };
 
   // Apply theme to CSS custom properties

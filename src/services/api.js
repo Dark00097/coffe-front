@@ -1,8 +1,9 @@
 // File: api(10).js
 import axios from 'axios';
+import { API_ORIGIN } from '../config/runtime';
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}/api`,
+  baseURL: `${API_ORIGIN}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -87,7 +88,7 @@ api.interceptors.response.use(
         }
         console.log('Attempting token refresh with:', token.substring(0, 10) + '...');
         const res = await axios.post(
-          `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}/api/refresh-token`,
+          `${API_ORIGIN}/api/refresh-token`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );

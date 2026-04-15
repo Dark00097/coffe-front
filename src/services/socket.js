@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
+import { API_ORIGIN } from '../config/runtime';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com';
+const API_URL = API_ORIGIN;
 
 let socket = null;
 let socketConnected = false;

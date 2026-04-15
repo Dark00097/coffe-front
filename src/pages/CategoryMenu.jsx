@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { ChevronLeft, Coffee, Search } from 'lucide-react';
 import debounce from 'lodash/debounce';
 import MenuItemCard from '../components/MenuItemCard';
+import { API_ORIGIN } from '../config/runtime';
 import './css/CategoryMenu.css';
 
 function CategoryMenu({ addToCart }) {
@@ -79,7 +80,7 @@ function CategoryMenu({ addToCart }) {
         const imageUrl = categoryData?.image_url 
           ? categoryData.image_url.startsWith('http') 
             ? categoryData.image_url 
-            : `${import.meta.env.VITE_API_URL || 'https://api.maisonkhayat.com'}${categoryData.image_url}`
+            : `${API_ORIGIN}${categoryData.image_url}`
           : null;
         setCategoryImage(imageUrl);
         setCategories(categoriesData);
