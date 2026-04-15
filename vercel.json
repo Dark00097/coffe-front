@@ -5,15 +5,15 @@
       "destination": "http://72.61.177.50:5001/api/:path*"
     },
     {
-      "source": "/socket.io",
+      "source": "/realtime",
       "destination": "http://72.61.177.50:5001/socket.io"
     },
     {
-      "source": "/socket.io/",
+      "source": "/realtime/",
       "destination": "http://72.61.177.50:5001/socket.io/"
     },
     {
-      "source": "/socket.io/:path*",
+      "source": "/realtime/:path*",
       "destination": "http://72.61.177.50:5001/socket.io/:path*"
     },
     {

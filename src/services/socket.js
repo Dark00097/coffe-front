@@ -32,7 +32,7 @@ export const initSocket = (
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     randomizationFactor: 0.5,
-    path: '/socket.io/',
+    path: '/realtime/',
     // Keep realtime working behind Vercel rewrites even when WS upgrade fails.
     transports: ['polling'],
     upgrade: false,
