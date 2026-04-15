@@ -581,7 +581,7 @@ function AdminBreakfasts() {
                 <input
                   type="file"
                   name="image"
-                  accept="image/jpeg,image/png"
+                  accept="image/*"
                   onChange={handleInputChange}
                   className="admin-breakfasts__form-input"
                 />

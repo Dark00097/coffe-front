@@ -18,6 +18,18 @@ import {
   CircularProgress,
 } from '@mui/material';
 
+const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm', '.m4v', '.avi', '.mkv', '.wmv', '.flv', '.mpeg', '.mpg'];
+
+const isVideoUrl = (url) => {
+  if (!url || typeof url !== 'string') return false;
+  const lowerUrl = url.toLowerCase();
+  if (lowerUrl.includes('/video/upload/')) {
+    return true;
+  }
+  const cleanUrl = lowerUrl.split('?')[0];
+  return VIDEO_EXTENSIONS.some((ext) => cleanUrl.endsWith(ext));
+};
+
 function BannerManagement() {
   const [banners, setBanners] = useState([]);
   const [form, setForm] = useState({ id: null, link: '', is_enabled: true, image: null });
@@ -31,6 +43,36 @@ function BannerManagement() {
     return imageUrl.startsWith('http')
       ? `${imageUrl}?v=${Date.now()}`
       : `${API_ORIGIN}${imageUrl}?v=${Date.now()}`;
+  };
+
+  const renderMediaPreview = (mediaUrl, altText, maxWidth = '150px') => {
+    const resolvedUrl = getImageUrl(mediaUrl);
+    if (!resolvedUrl) return null;
+
+    const baseStyle = { maxWidth, borderRadius: '8px', objectFit: 'cover' };
+
+    if (isVideoUrl(resolvedUrl)) {
+      return (
+        <video
+          src={resolvedUrl}
+          style={{ ...baseStyle, maxHeight: '120px' }}
+          muted
+          loop
+          autoPlay
+          playsInline
+          onError={() => toast.error(`Failed to load media for ${altText}`)}
+        />
+      );
+    }
+
+    return (
+      <img
+        src={resolvedUrl}
+        alt={altText}
+        style={{ ...baseStyle, height: 'auto' }}
+        onError={() => toast.error(`Failed to load image for ${altText}`)}
+      />
+    );
   };
 
   useEffect(() => {
@@ -203,22 +245,18 @@ function BannerManagement() {
           />
           <Box sx={{ mb: 2 }}>
             <Typography variant="body1" sx={{ mb: 1, color: 'var(--text-color)' }}>
-              Banner Image
+              Banner Media (image, GIF, or video)
             </Typography>
             <input
               type="file"
               name="image"
-              accept="image/jpeg,image/png"
+              accept="image/*,video/*"
               onChange={handleInputChange}
               disabled={loading || !isAdmin}
             />
             {form.id && banners.find((b) => b.id === form.id)?.image_url && (
               <Box sx={{ mt: 1 }}>
-                <img
-                  src={getImageUrl(banners.find((b) => b.id === form.id).image_url)}
-                  alt="Current Banner"
-                  style={{ maxWidth: '150px', height: 'auto', borderRadius: '8px', objectFit: 'cover' }}
-                />
+                {renderMediaPreview(banners.find((b) => b.id === form.id).image_url, 'current banner')}
               </Box>
             )}
           </Box>
@@ -278,12 +316,12 @@ function BannerManagement() {
         ) : (
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 600 }}>ID</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Image</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Link</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Enabled</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 600 }}>ID</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Media</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Link</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Enabled</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -292,14 +330,9 @@ function BannerManagement() {
                   <TableCell>{banner.id}</TableCell>
                   <TableCell>
                     {banner.image_url ? (
-                      <img
-                        src={getImageUrl(banner.image_url)}
-                        alt="Banner"
-                        style={{ maxWidth: '100px', height: 'auto', borderRadius: '8px', objectFit: 'cover' }}
-                        onError={() => toast.error(`Failed to load image for banner ${banner.id}`)}
-                      />
+                      renderMediaPreview(banner.image_url, `banner ${banner.id}`, '100px')
                     ) : (
-                      <Typography color="textSecondary">No image</Typography>
+                      <Typography color="textSecondary">No media</Typography>
                     )}
                   </TableCell>
                   <TableCell>{banner.link}</TableCell>

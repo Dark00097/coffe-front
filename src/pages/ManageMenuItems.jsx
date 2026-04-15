@@ -268,8 +268,8 @@ function ManageMenuItems() {
         throw new Error('Dietary tags must be a comma-separated list');
       }
       if (editingItem.image) {
-        if (!['image/jpeg', 'image/png'].includes(editingItem.image.type)) {
-          throw new Error('Image must be JPEG or PNG');
+        if (!editingItem.image.type.startsWith('image/')) {
+          throw new Error('Only image files are allowed');
         }
         if (editingItem.image.size > 5 * 1024 * 1024) {
           throw new Error('Image size must be less than 5MB');
@@ -401,8 +401,8 @@ function ManageMenuItems() {
         throw new Error('Dietary tags must be a comma-separated list');
       }
       if (editingItem.image) {
-        if (!['image/jpeg', 'image/png'].includes(editingItem.image.type)) {
-          throw new Error('Image must be JPEG or PNG');
+        if (!editingItem.image.type.startsWith('image/')) {
+          throw new Error('Only image files are allowed');
         }
         if (editingItem.image.size > 5 * 1024 * 1024) {
           throw new Error('Image size must be less than 5MB');
@@ -699,7 +699,7 @@ function ManageMenuItems() {
               <input
                 type="file"
                 name="image"
-                accept="image/jpeg,image/png"
+                accept="image/*"
                 onChange={handleInputChange}
                 disabled={isSubmitting}
               />

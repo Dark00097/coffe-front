@@ -111,8 +111,8 @@ function AddMenuItem() {
         toast.error('Dietary tags must be a comma-separated list of valid tags');
         return;
       }
-      if (newItem.image && !['image/jpeg', 'image/png'].includes(newItem.image.type)) {
-        toast.error('Image must be JPEG or PNG');
+      if (newItem.image && !newItem.image.type.startsWith('image/')) {
+        toast.error('Only image files are allowed');
         return;
       }
       if (newItem.image && newItem.image.size > 5 * 1024 * 1024) {
@@ -322,7 +322,7 @@ function AddMenuItem() {
                 id="image"
                 type="file"
                 name="image"
-                accept="image/jpeg,image/png"
+                accept="image/*"
                 onChange={handleInputChange}
                 className="add-menu-item__file-input"
               />
@@ -331,7 +331,7 @@ function AddMenuItem() {
                 {newItem.image ? newItem.image.name : 'Choose image file'}
               </label>
             </div>
-            <small className="add-menu-item__helper-text">JPEG or PNG format, max 5MB</small>
+            <small className="add-menu-item__helper-text">Any image format (jpg, png, webp, avif, gif, etc.), max 5MB</small>
           </div>
 
           {/* Submit Button */}

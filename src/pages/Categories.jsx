@@ -196,7 +196,7 @@ function Categories() {
                 <label className="categories__label">Image</label>
                 <input
                   type="file"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/*"
                   onChange={(e) => setNewCategory({ ...newCategory, image: e.target.files[0] })}
                   className="categories__file-input"
                 />
@@ -278,7 +278,7 @@ function Categories() {
                       <label className="categories__label">Image</label>
                       <input
                         type="file"
-                        accept="image/jpeg,image/png,image/webp"
+                        accept="image/*"
                         onChange={(e) => setEditingCategory({ ...editingCategory, image: e.target.files[0] })}
                         className="categories__file-input"
                       />

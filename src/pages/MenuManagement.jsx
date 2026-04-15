@@ -166,7 +166,7 @@ const MenuManagement = () => {
                   <Form.Label>Image</Form.Label>
                   <Form.Control
                     type="file"
-                    accept="image/jpeg,image/png"
+                    accept="image/*"
                     onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
                   />
                 </Form.Group>
