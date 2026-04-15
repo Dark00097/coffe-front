@@ -40,7 +40,7 @@ function BreakfastMenu({ addToCart }) {
   const containerRef = useRef(null);
 
   const getImageUrl = (imageUrl) => {
-    return imageUrl && imageUrl !== 'null' ? imageUrl : '/placeholder.jpg';
+    return imageUrl && imageUrl !== 'null' ? imageUrl : '/placeholder.svg';
   };
 
   useEffect(() => {
@@ -444,7 +444,7 @@ function BreakfastMenu({ addToCart }) {
                 loading="lazy"
                 onError={(e) => {
                   console.error('Erreur lors du chargement de l\'image du petit-déjeuner:', breakfast.image_url);
-                  e.target.src = '/placeholder.jpg';
+                  e.target.src = '/placeholder.svg';
                 }}
               />
               <div className="breakfast-menu__image-overlay">
@@ -747,3 +747,5 @@ function BreakfastMenu({ addToCart }) {
 }
 
 export default BreakfastMenu;
+
+

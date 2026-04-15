@@ -27,7 +27,7 @@ function CategoryMenu({ addToCart }) {
   const [isSwiping, setIsSwiping] = useState(false);
 
   // Fallback image URL (replace with your actual placeholder image URL)
-  const FALLBACK_IMAGE = 'https://res.cloudinary.com/dbvbbtekw/image/upload/v1630000000/Uploads/placeholder.jpg';
+  const FALLBACK_IMAGE = 'https://res.cloudinary.com/dbvbbtekw/image/upload/v1630000000/Uploads/placeholder.svg';
 
   const debouncedSearch = debounce((query) => {
     if (query.trim() === '') {
@@ -354,3 +354,4 @@ function CategoryMenu({ addToCart }) {
 }
 
 export default CategoryMenu;
+

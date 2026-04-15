@@ -233,7 +233,9 @@ function TopCategories() {
                       decoding="async"
                       onError={(e) => {
                         console.error('Error loading top category image:', category.image_url);
-                        e.target.src = '/placeholder.jpg';
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.srcset = '';
+                        e.currentTarget.src = '/placeholder.svg';
                       }}
                     />
                   ) : (
@@ -497,3 +499,5 @@ const cssStyles = `
 `;
 
 export default TopCategories;
+
+

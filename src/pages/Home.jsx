@@ -162,7 +162,9 @@ function Home({ addToCart }) {
               decoding="async"
               onError={(e) => {
                 console.error('Error loading category image:', category.image_url);
-                e.target.src = '/placeholder.jpg';
+                e.currentTarget.onerror = null;
+                e.currentTarget.srcset = '';
+                e.currentTarget.src = '/placeholder.svg';
               }}
             />
           ) : (
@@ -399,3 +401,5 @@ function Home({ addToCart }) {
 }
 
 export default Home;
+
+

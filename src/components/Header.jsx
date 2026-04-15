@@ -727,7 +727,7 @@ const Header = memo(
                       }}
                       onError={(e) => {
                         console.error('Error loading logo image:', customTheme.logo_url);
-                        e.target.src = '/placeholder.jpg';
+                        e.target.src = '/placeholder.svg';
                       }}
                     />
                   ) : (
@@ -804,7 +804,7 @@ const Header = memo(
                       }}
                       onError={(e) => {
                         console.error('Error loading logo image:', customTheme.logo_url);
-                        e.target.src = '/placeholder.jpg';
+                        e.target.src = '/placeholder.svg';
                       }}
                     />
                   ) : (
@@ -982,3 +982,5 @@ const NavItem = memo(
 );
 
 export default Header;
+
+

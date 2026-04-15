@@ -60,7 +60,7 @@ function CategoryList() {
               decoding="async"
               onError={(e) => {
                 console.error('Erreur lors du chargement de l\'image de la catégorie:', category.image_url);
-                e.target.src = '/placeholder.jpg';
+                e.target.src = '/placeholder.svg';
               }}
             />
           ) : (
@@ -140,3 +140,5 @@ function CategoryList() {
 }
 
 export default CategoryList;
+
+

@@ -42,3 +42,4 @@ function Banner({ banner }) {
 }
 
 export default Banner;
+

@@ -89,7 +89,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
       item.image_url !== '/Uploads/undefined' &&
       item.image_url !== 'null'
       ? item.image_url
-      : '/placeholder.jpg';
+      : '/placeholder.svg';
   }, [item?.image_url]);
 
   const handleOptionChange = useCallback((groupId, optionId) => {
@@ -726,10 +726,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
             loading="lazy"
             decoding="async"
             onLoad={() => setImageLoaded(true)}
-            onError={(e) => {
-              e.target.src = '/placeholder.jpg';
-              setImageLoaded(true);
-            }}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.srcset = ''; e.currentTarget.src = '/placeholder.svg'; setImageLoaded(true); }}
           />
 
           {discountPercentage > 0 && (
@@ -965,3 +962,5 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
 }
 
 export default MenuItemCard;
+
+

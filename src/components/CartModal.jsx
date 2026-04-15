@@ -19,7 +19,7 @@ import { appendImageQuery } from '../utils/imageUrl';
 
 const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, supplementSelections, handleQuantityChange, handleSupplementChange, currency }) => {
   const imageSrc = useMemo(() => {
-    let src = '/placeholder.jpg';
+    let src = '/placeholder.svg';
     if (item.image_url && item.image_url !== '/Uploads/undefined' && item.image_url !== 'null') {
       src = item.image_url;
     }
@@ -46,7 +46,7 @@ const CartItem = React.memo(({ item, itemSupplements, breakfastOptions, suppleme
             className="cart-modal-item-img"
             loading="lazy"
             decoding="async"
-            onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.srcset = ''; e.currentTarget.src = '/placeholder.svg'; }}
           />
         </div>
         <div className="cart-modal-item-details">
@@ -736,3 +736,5 @@ function CartModal({
 }
 
 export default CartModal;
+
+

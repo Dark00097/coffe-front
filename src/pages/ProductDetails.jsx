@@ -136,7 +136,7 @@ function ProductDetails({ addToCart }) {
         name: product.name || 'Unknown Product',
         unit_price: parseFloat(product.sale_price || product.regular_price) || 0,
         quantity: parseInt(quantity) || 1,
-        image_url: product.image_url && product.image_url !== 'null' ? product.image_url : '/placeholder.jpg',
+        image_url: product.image_url && product.image_url !== 'null' ? product.image_url : '/placeholder.svg',
         supplement_id: selectedSupplementData ? parseInt(selectedSupplementData.supplement_id) : null,
         supplement_name: selectedSupplementData ? selectedSupplementData.name : null,
         supplement_price: selectedSupplementData ? parseFloat(selectedSupplementData.additional_price) || 0 : 0,
@@ -388,7 +388,7 @@ function ProductDetails({ addToCart }) {
     );
   }
 
-  const imageSrc = product.image_url && product.image_url !== 'null' ? product.image_url : '/placeholder.jpg';
+  const imageSrc = product.image_url && product.image_url !== 'null' ? product.image_url : '/placeholder.svg';
   const regularPrice = parseFloat(product.regular_price) || 0;
   const salePrice = parseFloat(product.sale_price) || null;
   const averageRating = parseFloat(product.average_rating) || 0;
@@ -445,9 +445,7 @@ function ProductDetails({ addToCart }) {
               className="product-details-product-image"
               loading="eager"
               decoding="async"
-              onError={(e) => {
-                e.target.src = '/placeholder.jpg';
-              }}
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.srcset = ''; e.currentTarget.src = '/placeholder.svg'; }}
             />
           </div>
         </motion.div>
@@ -660,3 +658,5 @@ function ProductDetails({ addToCart }) {
 }
 
 export default ProductDetails;
+
+

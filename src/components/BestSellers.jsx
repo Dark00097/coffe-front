@@ -246,9 +246,7 @@ function BestSellers({ addToCart }) {
                   style={styles.bestSellerImage}
                   loading="lazy"
                   decoding="async"
-                  onError={(e) => {
-                    e.target.src = '/placeholder.jpg';
-                  }}
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.srcset = ''; e.currentTarget.src = '/placeholder.svg'; }}
                 />
               ) : (
                 <div style={styles.bestSellerPlaceholder}>
@@ -669,3 +667,5 @@ const cssStyles = (theme) => `
 `;
 
 export default BestSellers;
+
+

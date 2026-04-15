@@ -874,7 +874,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
           <div className="order-waiting-items">
             {groupedItems.length > 0 ? (
               groupedItems.map((item, index) => {
-                const imageUrl = item.imageUrl && item.imageUrl !== 'null' ? item.imageUrl : '/placeholder.jpg';
+                const imageUrl = item.imageUrl && item.imageUrl !== 'null' ? item.imageUrl : '/placeholder.svg';
                 const totalItemPrice = item.unitPrice * item.quantity;
 
                 return (
@@ -889,7 +889,7 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
                       className="order-waiting-item-image"
                       onError={(e) => {
                         console.error(`Erreur lors du chargement de l'image de l'article (${item.type}):`, item.imageUrl);
-                        e.target.src = '/placeholder.jpg';
+                        e.target.src = '/placeholder.svg';
                       }}
                     />
                     <div className="order-waiting-item-details">
@@ -1002,3 +1002,5 @@ function OrderWaiting({ sessionId: propSessionId, socket }) {
 }
 
 export default OrderWaiting;
+
+
