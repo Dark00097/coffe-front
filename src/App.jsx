@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { api } from './services/api';
 import { initSocket, getSocket, refreshSocketAuth } from './services/socket';
 import { v4 as uuidv4 } from 'uuid';
@@ -530,8 +530,12 @@ function App() {
   useEffect(() => {
     const handleError = (event) => {
       console.error('Global error:', event.message || 'Unknown error', { timestamp: new Date().toISOString() });
-      toast.error('An error occurred: ' + (event.message || 'Unknown error'));
-      setError('An unexpected error occurred. Please try refreshing the page.');
+      const path = window.location.pathname;
+      const isAdminOrStaff = path.startsWith('/admin') || path.startsWith('/staff');
+      if (isAdminOrStaff) {
+        toast.error('Une erreur est survenue : ' + (event.message || 'Erreur inconnue'));
+      }
+      setError('Une erreur inattendue est survenue. Veuillez actualiser la page.');
     };
     window.addEventListener('error', handleError);
     return () => window.removeEventListener('error', handleError);
@@ -602,11 +606,11 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails addToCart={addToCart} latestOrderId={latestOrderId} />} />
           <Route
             path="/order-waiting/:orderId"
-            element={isSocketReady ? <OrderWaiting sessionId={sessionId} socket={socket} /> : <div>Loading socket...</div>}
+            element={isSocketReady ? <OrderWaiting sessionId={sessionId} socket={socket} /> : <div>Chargement de la connexion temps reel...</div>}
           />
           <Route path="/breakfast" element={<BreakfastMenu addToCart={addToCart} reusableOptionGroups={reusableOptionGroups} />} />
           <Route path="/breakfast/:id" element={<BreakfastMenu addToCart={addToCart} reusableOptionGroups={reusableOptionGroups} />} />
-          <Route path="*" element={<div style={{ textAlign: 'center', color: '#666' }}>404 Not Found</div>} />
+          <Route path="*" element={<div style={{ textAlign: 'center', color: '#666' }}>404 - Page introuvable</div>} />
         </Routes>
         <CartModal
           isOpen={isCartOpen}
@@ -625,6 +629,9 @@ function App() {
           socket={socket}
         />
         <Footer />
+        {isAdminRoute && (
+          <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+        )}
       </div>
     </TransitionProvider>
   );

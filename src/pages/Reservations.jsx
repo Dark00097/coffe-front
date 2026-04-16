@@ -8,6 +8,7 @@ import {
   Phone,
   Schedule,
   CheckCircle,
+  Cancel,
 } from '@mui/icons-material';
 
 function Reservations() {
@@ -67,13 +68,13 @@ function Reservations() {
                 table.id === data.table_id ? { ...table, status: data.status } : table
               )
             );
-            toast.info(`Table ${data.table_id} status updated to ${data.status}`);
+            toast.info(`Statut de la table ${data.table_id} mis a jour : ${data.status}`);
           },
         });
       } catch (error) {
         console.error('Error fetching tables:', error);
-        toast.error(error.response?.data?.error || 'Failed to load tables');
-        setError('Failed to load tables.');
+        toast.error(error.response?.data?.error || 'Echec du chargement des tables');
+        setError('Echec du chargement des tables.');
       } finally {
         setLoading(false);
       }
@@ -98,7 +99,7 @@ function Reservations() {
       setFilteredTables(availableAtTime);
       if (reservation.table_id && !availableAtTime.find(t => t.id === parseInt(reservation.table_id))) {
         setReservation({ ...reservation, table_id: '' });
-        toast.warn('Selected table is not available at this time. Please choose another.');
+        toast.warn('La table selectionnee n est pas disponible a cette heure. Veuillez en choisir une autre.');
       }
     } else {
       setFilteredTables(tables);
@@ -115,26 +116,26 @@ function Reservations() {
     try {
       setSubmitting(true);
       if (!reservation.table_id || !reservation.reservation_time || !reservation.phone_number) {
-        toast.error('All fields are required');
+        toast.error('Tous les champs sont obligatoires');
         return;
       }
       const reservationDate = new Date(reservation.reservation_time);
       if (reservationDate <= new Date()) {
-        toast.error('Reservation time must be in the future');
+        toast.error('L heure de reservation doit etre dans le futur');
         return;
       }
       if (!validatePhoneNumber(reservation.phone_number)) {
-        toast.error('Phone number must be in international format (e.g., +1234567890)');
+        toast.error('Le numero doit etre au format international (ex: +1234567890)');
         return;
       }
       const selectedTable = tables.find(table => table.id === parseInt(reservation.table_id));
       if (!selectedTable) {
-        toast.error('Selected table is no longer available');
+        toast.error('La table selectionnee n est plus disponible');
         return;
       }
       const reservedUntil = selectedTable.reserved_until ? new Date(selectedTable.reserved_until) : null;
       if (selectedTable.status !== 'available' || (reservedUntil && reservedUntil > reservationDate)) {
-        toast.error('Selected table is not available at the specified time');
+        toast.error('La table selectionnee n est pas disponible a l heure choisie');
         return;
       }
       const formattedReservationTime = formatToMySQLDateTime(reservation.reservation_time);
@@ -142,7 +143,7 @@ function Reservations() {
         ...reservation,
         reservation_time: formattedReservationTime,
       });
-      toast.success('Reservation created successfully');
+      toast.success('Reservation creee avec succes');
       setReservation({
         table_id: '',
         reservation_time: new Date(reservationDate.getTime() + 30 * 60 * 1000).toISOString().slice(0, 16),
@@ -151,7 +152,7 @@ function Reservations() {
       navigate('/');
     } catch (error) {
       console.error('Error creating reservation:', error);
-      toast.error(error.response?.data?.errors?.[0]?.msg || error.response?.data?.error || 'Failed to create reservation');
+      toast.error(error.response?.data?.errors?.[0]?.msg || error.response?.data?.error || 'Echec de la creation de reservation');
     } finally {
       setSubmitting(false);
     }
@@ -295,7 +296,7 @@ function Reservations() {
     return (
       <div style={styles.error}>
         <Cancel style={{ fontSize: '1.5rem', marginBottom: '8px' }} />
-        Error: {error}
+        Erreur : {error}
       </div>
     );
   }
@@ -304,7 +305,7 @@ function Reservations() {
     return (
       <div style={styles.loading}>
         <TableRestaurant style={{ fontSize: '2rem', marginBottom: '8px' }} />
-        Loading tables...
+        Chargement des tables...
       </div>
     );
   }
@@ -316,13 +317,13 @@ function Reservations() {
       <div style={styles.header}>
         <h1 style={styles.title}>
           <TableRestaurant style={{ fontSize: '1.5rem' }} />
-          Reserve a Table
+          Reserver une table
         </h1>
       </div>
       <form onSubmit={handleReservation} style={styles.form}>
         <div style={styles.formGroup}>
           <label htmlFor="reservation_time" style={styles.label}>
-            Reservation Time (CET)
+            Heure de reservation (CET)
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Schedule style={{ color: '#64748b', fontSize: '1.2rem' }} />
@@ -344,7 +345,7 @@ function Reservations() {
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="table_id" style={styles.label}>
-            Select Table
+            Selectionner une table
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <TableRestaurant style={{ color: '#64748b', fontSize: '1.2rem' }} />
@@ -356,36 +357,36 @@ function Reservations() {
               required
               disabled={!reservation.reservation_time}
             >
-              <option value="">Select a Table</option>
+              <option value="">Choisir une table</option>
               {filteredTables.length > 0 ? (
                 filteredTables.map(table => (
                   <option key={table.id} value={table.id}>
-                    {table.table_number} (Capacity: {table.capacity})
+                    {table.table_number} (Capacite : {table.capacity})
                   </option>
                 ))
               ) : (
                 <option value="" disabled>
-                  No tables available
+                  Aucune table disponible
                 </option>
               )}
             </select>
           </div>
           {!reservation.reservation_time && (
             <p style={styles.disabledMessage}>
-              Please select a reservation time to enable table selection.
+              Veuillez choisir une heure de reservation pour activer la selection des tables.
             </p>
           )}
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="phone_number" style={styles.label}>
-            WhatsApp Phone Number
+            Numero WhatsApp
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Phone style={{ color: '#64748b', fontSize: '1.2rem' }} />
             <input
               id="phone_number"
               type="tel"
-              placeholder="e.g., +1234567890"
+              placeholder="ex: +1234567890"
               value={reservation.phone_number}
               onChange={(e) => setReservation({ ...reservation, phone_number: e.target.value })}
               style={{
@@ -402,7 +403,7 @@ function Reservations() {
           </div>
           {reservation.phone_number && !validatePhoneNumber(reservation.phone_number) && (
             <p style={{ ...styles.disabledMessage, color: '#ef4444' }}>
-              Please enter a valid phone number (e.g., +1234567890).
+              Veuillez entrer un numero valide (ex: +1234567890).
             </p>
           )}
         </div>
@@ -421,12 +422,12 @@ function Reservations() {
           }}
         >
           <CheckCircle style={{ fontSize: '1rem' }} />
-          {submitting ? 'Reserving...' : 'Reserve Table'}
+          {submitting ? 'Reservation en cours...' : 'Reserver la table'}
         </button>
       </form>
       {filteredTables.length === 0 && reservation.reservation_time && (
         <p style={styles.noTables}>
-          No tables are available at the selected time. Please try a different time.
+          Aucune table n est disponible a l heure selectionnee. Veuillez essayer une autre heure.
         </p>
       )}
     </div>

@@ -46,7 +46,7 @@ const Footer = memo(() => {
             color: 'var(--text-color)',
           }}
         >
-          Â© 2025 La Coupole. All rights reserved.
+          © 2025 La Coupole. Tous droits reserves.
         </Typography>
         <Typography
           variant="caption"
@@ -58,7 +58,7 @@ const Footer = memo(() => {
             mt: '4px',
           }}
         >
-          Created by Dark.exe00
+          Cree par Dark.exe00
         </Typography>
       </Box>
 
@@ -78,7 +78,7 @@ const Footer = memo(() => {
             color: 'var(--text-color)',
           }}
         >
-          Contact Us
+          Contact
         </Typography>
         <Box sx={{ display: 'flex', gap: '12px' }}>
           <IconButton
@@ -124,3 +124,4 @@ const Footer = memo(() => {
 });
 
 export default Footer;
+

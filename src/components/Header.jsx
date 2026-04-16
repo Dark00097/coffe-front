@@ -101,7 +101,7 @@ const Header = memo(
     ];
 
     const publicLinks = [
-      { to: '/', label: 'All Products', icon: <HomeIcon />, primary: true },
+      { to: '/', label: 'Tous les produits', icon: <HomeIcon />, primary: true },
       ...categories.map((category) => ({
         to: `/category/${category.id}`,
         label: category.name,
@@ -365,7 +365,7 @@ const Header = memo(
               <TextField
                 fullWidth
                 size="small"
-                placeholder="Search products..."
+                placeholder="Rechercher des produits..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSearch(e)}
@@ -447,7 +447,7 @@ const Header = memo(
             ) : isStaff ? (
               renderMenuSection('Staff Portal', staffLinks)
             ) : (
-              renderMenuSection('Menu', publicLinks)
+              renderMenuSection('Menu principal', publicLinks)
             )}
           </Box>
 
@@ -475,7 +475,7 @@ const Header = memo(
                     variant="subtitle1"
                     sx={{ fontWeight: 600, color: '#1a1a1a', marginBottom: '2px', fontSize: '15px' }}
                   >
-                    {user.name || 'User'}
+                    {user.name || 'Utilisateur'}
                   </Typography>
                   <Chip
                     label={`${user.role.charAt(0).toUpperCase() + user.role.slice(1)}`}
@@ -511,7 +511,7 @@ const Header = memo(
                   },
                 }}
               >
-                Sign Out
+                Se deconnecter
               </Button>
             ) : (
               <Button
@@ -538,7 +538,7 @@ const Header = memo(
                   },
                 }}
               >
-                Staff Login
+                Connexion staff
               </Button>
             )}
           </Box>
@@ -607,7 +607,7 @@ const Header = memo(
               {customTheme?.logo_url ? (
                 <img
                   src={customTheme.logo_url}
-                  alt="Café Logo"
+                  alt="Logo du cafe"
                   style={{ 
                     maxHeight: '48px', 
                     maxWidth: '140px',
@@ -618,13 +618,13 @@ const Header = memo(
                   onError={(e) => {
                     console.error('Error loading logo image:', customTheme.logo_url);
                     e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<span style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px;"><svg style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path fill="currentColor" d="M8.1,13.34L3.91,9.16C2.35,7.59 2.35,5.06 3.91,3.5L10.93,10.5L8.1,13.34M14.88,11.53C14.58,11.24 14.58,10.76 14.88,10.47L18.59,6.76C18.88,6.47 19.36,6.47 19.65,6.76L22.47,9.59L14.88,11.53M8.83,15.17L6.24,17.76C4.78,19.22 2.39,19.22 0.93,17.76L3.74,14.95L8.83,15.17M17.05,14.88L14.24,17.69C13.94,17.99 13.94,18.47 14.24,18.76L17.05,21.57C17.35,21.87 17.83,21.87 18.12,21.57L21.88,17.81L17.05,14.88Z" /></svg>Café Local</span>';
+                    e.target.parentElement.innerHTML = '<span style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px;"><svg style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path fill="currentColor" d="M8.1,13.34L3.91,9.16C2.35,7.59 2.35,5.06 3.91,3.5L10.93,10.5L8.1,13.34M14.88,11.53C14.58,11.24 14.58,10.76 14.88,10.47L18.59,6.76C18.88,6.47 19.36,6.47 19.65,6.76L22.47,9.59L14.88,11.53M8.83,15.17L6.24,17.76C4.78,19.22 2.39,19.22 0.93,17.76L3.74,14.95L8.83,15.17M17.05,14.88L14.24,17.69C13.94,17.99 13.94,18.47 14.24,18.76L17.05,21.57C17.35,21.87 17.83,21.87 18.12,21.57L21.88,17.81L17.05,14.88Z" /></svg>Cafe Local</span>';
                   }}
                 />
               ) : (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, fontSize: { xs: '18px', md: '20px' } }}>
                   <RestaurantIcon sx={{ fontSize: '24px', color: 'var(--text-color)' }} />
-                  Café Local
+                  Cafe Local
                 </Box>
               )}
             </Box>
@@ -717,7 +717,7 @@ const Header = memo(
                   {customTheme?.logo_url ? (
                     <img
                       src={customTheme.logo_url}
-                      alt="Café Logo"
+                      alt="Logo du cafe"
                       style={{ 
                         maxHeight: '48px', 
                         maxWidth: '180px',
@@ -733,7 +733,7 @@ const Header = memo(
                   ) : (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, fontSize: '18px', color: 'var(--primary-color)' }}>
                       <RestaurantIcon sx={{ fontSize: '24px' }} />
-                      Café Local
+                      Cafe Local
                     </Box>
                   )}
                 </Box>
@@ -794,7 +794,7 @@ const Header = memo(
                   {customTheme?.logo_url ? (
                     <img
                       src={customTheme.logo_url}
-                      alt="Café Logo"
+                      alt="Logo du cafe"
                       style={{ 
                         maxHeight: '56px', 
                         maxWidth: '220px',
@@ -810,7 +810,7 @@ const Header = memo(
                   ) : (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 600, fontSize: '20px', color: 'var(--primary-color)' }}>
                       <RestaurantIcon sx={{ fontSize: '28px' }} />
-                      Café Local
+                      Cafe Local
                     </Box>
                   )}
                 </Box>
@@ -866,7 +866,7 @@ const Header = memo(
                         variant="subtitle1"
                         sx={{ fontWeight: 600, color: '#1a1a1a', marginBottom: '4px', fontSize: '16px' }}
                       >
-                        {user.name || 'User'}
+                        {user.name || 'Utilisateur'}
                       </Typography>
                       <Chip
                         label={`${user.role.charAt(0).toUpperCase() + user.role.slice(1)}`}
@@ -902,7 +902,7 @@ const Header = memo(
                       },
                     }}
                   >
-                    Sign Out
+                    Se deconnecter
                   </Button>
                 ) : (
                   <Button
@@ -928,7 +928,7 @@ const Header = memo(
                       },
                     }}
                   >
-                    Staff Login
+                    Connexion staff
                   </Button>
                 )}
               </Box>

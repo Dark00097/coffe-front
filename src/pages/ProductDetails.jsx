@@ -49,7 +49,7 @@ function ProductDetails({ addToCart }) {
         setLoading(true);
         const itemId = parseInt(id);
         if (isNaN(itemId) || itemId <= 0) {
-          throw new Error('Invalid product ID');
+          throw new Error('ID de produit invalide');
         }
 
         const [productResponse, relatedResponse, supplementsResponse, ratingResponse, categoriesResponse, themeResponse] = await Promise.all([
@@ -85,8 +85,8 @@ function ProductDetails({ addToCart }) {
         }, 100);
       } catch (error) {
         console.error('Error loading product details:', error);
-        toast.error(error.response?.data?.error || 'Failed to load product details');
-        setError('Failed to load product details');
+        toast.error(error.response?.data?.error || 'Echec du chargement des details du produit');
+        setError('Echec du chargement des details du produit');
         setLoading(false);
         endTransition();
       }
@@ -98,7 +98,7 @@ function ProductDetails({ addToCart }) {
     () =>
       debounce(async (ratingValue) => {
         if (ratingValue < 1 || ratingValue > 5) {
-          toast.error('Please select a rating between 1 and 5');
+          toast.error('Veuillez selectionner une note entre 1 et 5');
           return;
         }
         try {
@@ -107,12 +107,12 @@ function ProductDetails({ addToCart }) {
             rating: parseInt(ratingValue),
           });
           setIsRating(true);
-          toast.success('Rating submitted successfully!');
+          toast.success('Note envoyee avec succes !');
           const response = await api.get(`/menu-items/${id}`);
           setProduct(response.data);
         } catch (error) {
           console.error('Error submitting rating:', error);
-          toast.error(error.response?.data?.error || 'Failed to submit rating');
+          toast.error(error.response?.data?.error || 'Echec de l envoi de la note');
         }
       }, 500),
     [id]
@@ -120,11 +120,11 @@ function ProductDetails({ addToCart }) {
 
   const handleAddToCart = useCallback(async () => {
     if (!product) {
-      toast.error('Product not loaded');
+      toast.error('Produit non charge');
       return;
     }
     if (!product.availability) {
-      toast.error('Item not available');
+      toast.error('Article indisponible');
       return;
     }
     try {
@@ -133,7 +133,7 @@ function ProductDetails({ addToCart }) {
         : null;
       const itemToAdd = {
         item_id: parseInt(product.id),
-        name: product.name || 'Unknown Product',
+        name: product.name || 'Produit inconnu',
         unit_price: parseFloat(product.sale_price || product.regular_price) || 0,
         quantity: parseInt(quantity) || 1,
         image_url: product.image_url && product.image_url !== 'null' ? product.image_url : '/placeholder.svg',
@@ -143,12 +143,12 @@ function ProductDetails({ addToCart }) {
         cartItemId: `${product.id}-${Date.now()}`,
       };
       await addToCart(itemToAdd);
-      toast.success(`${product.name} added to cart!`);
+      toast.success(`${product.name} ajoute au panier !`);
       setSelectedSupplement('0');
       setQuantity(1);
     } catch (error) {
       console.error('Error adding to cart:', error);
-      toast.error(error.response?.data?.error || 'Failed to add to cart');
+      toast.error(error.response?.data?.error || 'Echec de l ajout au panier');
     }
   }, [product, quantity, selectedSupplement, supplements, addToCart]);
 
@@ -339,7 +339,7 @@ function ProductDetails({ addToCart }) {
           <div className="product-details-error-icon">🍽️</div>
           <p className="product-details-error-text">{error}</p>
           <button className="product-details-retry-button" onClick={() => window.location.reload()}>
-            Retry
+            Reessayer
           </button>
         </div>
       </motion.div>
@@ -359,7 +359,7 @@ function ProductDetails({ addToCart }) {
       >
         <div className="product-details-loading-container">
           <div className="product-details-loading-spinner"></div>
-          <p className="product-details-loading-text">Loading...</p>
+          <p className="product-details-loading-text">Chargement...</p>
         </div>
       </motion.div>
     );
@@ -379,9 +379,9 @@ function ProductDetails({ addToCart }) {
       >
         <div className="product-details-error-container">
           <div className="product-details-error-icon">🔍</div>
-          <p className="product-details-error-text">Product not found</p>
+          <p className="product-details-error-text">Produit introuvable</p>
           <button className="product-details-retry-button" onClick={() => navigate('/')}>
-            Back to Home
+            Retour a l accueil
           </button>
         </div>
       </motion.div>
@@ -441,7 +441,7 @@ function ProductDetails({ addToCart }) {
               layoutId={transitionData && transitionData.itemId === product.id ? `product-image-${product.id}` : undefined}
               src={imageSrc}
               srcSet={`${appendImageQuery(imageSrc, 'w=400')} 1x, ${appendImageQuery(imageSrc, 'w=800')} 2x`}
-              alt={product.name || 'Product'}
+              alt={product.name || 'Produit'}
               className="product-details-product-image"
               loading="eager"
               decoding="async"
@@ -460,7 +460,7 @@ function ProductDetails({ addToCart }) {
             className="product-details-product-title"
             layoutId={transitionData && transitionData.itemId === product.id ? `product-title-${product.id}` : undefined}
           >
-            {product.name || 'Unknown Product'}
+            {product.name || 'Produit inconnu'}
           </motion.h1>
 
           <motion.div 
@@ -484,7 +484,7 @@ function ProductDetails({ addToCart }) {
             className="product-details-product-description"
             variants={contentVariants}
           >
-            {product.description || 'No description available.'}
+            {product.description || 'Aucune description disponible.'}
           </motion.p>
 
           <motion.div 
@@ -521,10 +521,10 @@ function ProductDetails({ addToCart }) {
                   style={{ fontSize: '18px' }}
                   className={product.availability ? 'text-green-500' : 'text-red-500'}
                 />
-                <span className="product-details-option-label">Availability</span>
+                <span className="product-details-option-label">Disponibilite</span>
               </div>
               <span className="product-details-option-value">
-                {product.availability ? 'In Stock' : 'Out of Stock'}
+                {product.availability ? 'En stock' : 'Rupture de stock'}
               </span>
             </div>
 
@@ -532,10 +532,10 @@ function ProductDetails({ addToCart }) {
               <div className="product-details-option-row">
                 <div className="product-details-option-left">
                   <RestaurantMenuOutlined style={{ fontSize: '18px' }} className="text-orange-500" />
-                  <span className="product-details-option-label">Dietary</span>
+                  <span className="product-details-option-label">Regime alimentaire</span>
                 </div>
                 <span className="product-details-option-value">
-                  {JSON.parse(product.dietary_tags || '[]').join(', ') || 'None'}
+                  {JSON.parse(product.dietary_tags || '[]').join(', ') || 'Aucun'}
                 </span>
               </div>
             )}
@@ -551,7 +551,7 @@ function ProductDetails({ addToCart }) {
                   onChange={(e) => setSelectedSupplement(e.target.value)}
                   className="product-details-supplement-select"
                 >
-                  <option value="0">None</option>
+                  <option value="0">Aucun</option>
                   {supplements.map((s) => (
                     <option key={s.supplement_id} value={s.supplement_id}>
                       {s.name} (+{parseFloat(s.additional_price || 0).toFixed(2)} {currency})
@@ -564,7 +564,7 @@ function ProductDetails({ addToCart }) {
             <div className="product-details-option-row">
               <div className="product-details-option-left">
                 <Star style={{ fontSize: '18px' }} className="text-yellow-400" />
-                <span className="product-details-option-label">Your Rating</span>
+                <span className="product-details-option-label">Votre note</span>
               </div>
               <div className="product-details-user-rating-container">
                 <div className="product-details-user-rating-stars">
@@ -581,23 +581,23 @@ function ProductDetails({ addToCart }) {
                     className="product-details-rating-submit-button"
                     onClick={() => debouncedRatingSubmit(rating)}
                   >
-                    Submit
+                    Envoyer
                   </button>
                 )}
-                {isRatingSubmitted && <span className="product-details-rating-thank-you">Thank you!</span>}
+                {isRatingSubmitted && <span className="product-details-rating-thank-you">Merci !</span>}
               </div>
             </div>
 
             <div className="product-details-option-row">
               <div className="product-details-option-left">
-                <span className="product-details-option-label">Quantity</span>
+                <span className="product-details-option-label">Quantite</span>
               </div>
               <div className="product-details-quantity-container">
                 <button
                   className="product-details-quantity-button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   disabled={quantity <= 1 || !product.availability}
-                  aria-label="Decrease quantity"
+                  aria-label="Diminuer la quantite"
                 >
                   <RemoveOutlined style={{ fontSize: '18px' }} />
                 </button>
@@ -606,7 +606,7 @@ function ProductDetails({ addToCart }) {
                   className="product-details-quantity-button"
                   onClick={() => setQuantity(quantity + 1)}
                   disabled={!product.availability}
-                  aria-label="Increase quantity"
+                  aria-label="Augmenter la quantite"
                 >
                   <AddOutlined style={{ fontSize: '18px' }} />
                 </button>
@@ -622,7 +622,7 @@ function ProductDetails({ addToCart }) {
             whileTap={{ scale: 0.97 }}
           >
             <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-            {product.availability ? `Add to Cart · ${calculateTotalPrice()} ${currency}` : 'Unavailable'}
+            {product.availability ? `Ajouter au panier · ${calculateTotalPrice()} ${currency}` : 'Indisponible'}
           </motion.button>
         </motion.div>
 
@@ -633,7 +633,7 @@ function ProductDetails({ addToCart }) {
             initial="initial"
             animate="animate"
           >
-            <h2 className="product-details-section-title">You may also like</h2>
+            <h2 className="product-details-section-title">Vous aimerez aussi</h2>
             <div className="product-details-related-grid">
               {relatedProducts.map((item, index) => (
                 <motion.div
