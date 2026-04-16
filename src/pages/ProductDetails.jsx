@@ -336,7 +336,7 @@ function ProductDetails({ addToCart }) {
         exit={{ opacity: 0 }}
       >
         <div className="product-details-error-container">
-          <div className="product-details-error-icon">🍽️</div>
+          <div className="product-details-error-icon">ðŸ½ï¸</div>
           <p className="product-details-error-text">{error}</p>
           <button className="product-details-retry-button" onClick={() => window.location.reload()}>
             Reessayer
@@ -378,7 +378,7 @@ function ProductDetails({ addToCart }) {
         exit={{ opacity: 0 }}
       >
         <div className="product-details-error-container">
-          <div className="product-details-error-icon">🔍</div>
+          <div className="product-details-error-icon">ðŸ”</div>
           <p className="product-details-error-text">Produit introuvable</p>
           <button className="product-details-retry-button" onClick={() => navigate('/')}>
             Retour a l accueil
@@ -622,7 +622,7 @@ function ProductDetails({ addToCart }) {
             whileTap={{ scale: 0.97 }}
           >
             <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-            {product.availability ? `S�lectionner � ${calculateTotalPrice()} ${currency}` : 'Indisponible'}
+            {product.availability ? `Selectionner - ${calculateTotalPrice()} ${currency}` : 'Indisponible'}
           </motion.button>
         </motion.div>
 
