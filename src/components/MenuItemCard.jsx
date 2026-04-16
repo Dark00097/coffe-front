@@ -431,22 +431,27 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
       },
       priceContainer: {
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: isMobile ? 'column' : 'row',
+        alignItems: isMobile ? 'flex-start' : 'center',
         justifyContent: 'space-between',
+        gap: isMobile ? '8px' : '0',
         marginTop: 'auto',
-        paddingTop: '4px',
+        paddingTop: isMobile ? '6px' : '4px',
       },
       priceInfo: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '2px',
+        width: isMobile ? '100%' : 'auto',
       },
       currentPrice: {
         fontSize: isSmallMobile ? '15px' : '16px',
         fontWeight: '600',
         color: salePrice ? 'var(--primary-color)' : '#1f2937',
         letterSpacing: '-0.3px',
+        whiteSpace: 'nowrap',
+        lineHeight: 1.1,
       },
       originalPrice: {
         fontSize: isSmallMobile ? '10px' : '11px',
@@ -459,6 +464,8 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
         display: 'flex',
         gap: '4px',
         alignItems: 'center',
+        width: '100%',
+        justifyContent: 'flex-start',
       },
       mobileActionButton: {
         background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)',
@@ -475,10 +482,11 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
         WebkitTapHighlightColor: 'transparent',
       },
       mobileSelectionButton: {
-        minWidth: isSmallMobile ? '98px' : '110px',
-        width: 'auto',
+        minWidth: 0,
+        width: '100%',
         padding: isSmallMobile ? '0 10px' : '0 12px',
         gap: '6px',
+        justifyContent: 'center',
       },
       mobileSelectionButtonText: {
         color: '#ffffff',
