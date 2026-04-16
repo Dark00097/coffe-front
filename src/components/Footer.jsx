@@ -46,7 +46,7 @@ const Footer = memo(() => {
             color: 'var(--text-color)',
           }}
         >
-          © 2025 La Coupole. Tous droits reserves.
+          Â© 2026 CHM PIZZA. Tous droits reserves.
         </Typography>
         <Typography
           variant="caption"
@@ -58,7 +58,7 @@ const Footer = memo(() => {
             mt: '4px',
           }}
         >
-          Cree par Dark.exe00
+          Par Next Wave
         </Typography>
       </Box>
 
