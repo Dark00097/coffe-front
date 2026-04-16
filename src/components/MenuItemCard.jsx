@@ -1,7 +1,6 @@
 import { api } from '../services/api';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import EditIcon from '@mui/icons-material/Edit';
@@ -368,6 +367,19 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
         WebkitTapHighlightColor: 'transparent',
       },
+      selectionButton: {
+        minWidth: isSmallMobile ? '112px' : '126px',
+        width: 'auto',
+        padding: isSmallMobile ? '0 10px' : '0 12px',
+        gap: '6px',
+      },
+      selectionButtonText: {
+        color: '#ffffff',
+        fontSize: isSmallMobile ? '11px' : '12px',
+        fontWeight: '600',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+      },
       actionButtonDisabled: {
         background: 'rgba(156, 163, 175, 0.7)',
         cursor: 'not-allowed',
@@ -461,6 +473,19 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
         transition: 'all 0.2s ease',
         boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
         WebkitTapHighlightColor: 'transparent',
+      },
+      mobileSelectionButton: {
+        minWidth: isSmallMobile ? '98px' : '110px',
+        width: 'auto',
+        padding: isSmallMobile ? '0 10px' : '0 12px',
+        gap: '6px',
+      },
+      mobileSelectionButtonText: {
+        color: '#ffffff',
+        fontSize: isSmallMobile ? '10px' : '11px',
+        fontWeight: '600',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
       },
       mobileActionButtonDisabled: {
         background: 'rgba(156, 163, 175, 0.7)',
@@ -746,30 +771,21 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                   <EditIcon sx={{ fontSize: isSmallMobile ? 16 : 18, color: '#ffffff' }} />
                 </button>
               ) : (
-                <>
-                  <button
-                    style={styles.actionButton}
-                    className="action-btn"
-                    onClick={handleViewProduct}
-                    title="View details"
-                    aria-label="View details"
-                  >
-                    <RemoveRedEyeIcon sx={{ fontSize: isSmallMobile ? 16 : 18, color: '#ffffff' }} />
-                  </button>
-                  <button
-                    style={{
-                      ...styles.actionButton,
-                      ...(item.availability ? {} : styles.actionButtonDisabled),
-                    }}
-                    className="action-btn"
-                    onClick={handleAddToCart}
-                    title={item.availability ? 'Add to cart' : 'Unavailable'}
-                    disabled={!item.availability}
-                    aria-label={item.availability ? 'Add to cart' : 'Unavailable'}
-                  >
-                    <ShoppingCartIcon sx={{ fontSize: isSmallMobile ? 16 : 18, color: '#ffffff' }} />
-                  </button>
-                </>
+                <button
+                  style={{
+                    ...styles.actionButton,
+                    ...styles.selectionButton,
+                    ...(item.availability ? {} : styles.actionButtonDisabled),
+                  }}
+                  className="action-btn"
+                  onClick={handleAddToCart}
+                  title={item.availability ? 'Sélectionner' : 'Indisponible'}
+                  disabled={!item.availability}
+                  aria-label={item.availability ? 'Sélectionner' : 'Indisponible'}
+                >
+                  <ShoppingCartIcon sx={{ fontSize: isSmallMobile ? 16 : 18, color: '#ffffff' }} />
+                  <span style={styles.selectionButtonText}>Sélectionner</span>
+                </button>
               )}
             </div>
           )}
@@ -777,12 +793,12 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
 
         <div style={styles.content}>
           {!item.availability && (
-            <div style={styles.unavailableBadge}>Unavailable</div>
+            <div style={styles.unavailableBadge}>Indisponible</div>
           )}
 
-          <div style={styles.category}>{item.category_name || (item.type === 'breakfast' ? 'Breakfast' : 'Uncategorized')}</div>
+          <div style={styles.category}>{item.category_name || (item.type === 'breakfast' ? 'Petit-dejeuner' : 'Sans categorie')}</div>
 
-          <h3 style={styles.title}>{item.name || 'Unknown Item'}</h3>
+          <h3 style={styles.title}>{item.name || 'Article inconnu'}</h3>
 
           {(ratingValue > 0 || reviewCount > 0) && (
             <div style={styles.ratingContainer}>
@@ -816,30 +832,21 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                     <EditIcon sx={{ fontSize: 14, color: '#ffffff' }} />
                   </button>
                 ) : (
-                  <>
-                    <button
-                      style={styles.mobileActionButton}
-                      className="mobile-action-btn"
-                      onClick={handleViewProduct}
-                      title="View details"
-                      aria-label="View details"
-                    >
-                      <RemoveRedEyeIcon sx={{ fontSize: 14, color: '#ffffff' }} />
-                    </button>
-                    <button
-                      style={{
-                        ...styles.mobileActionButton,
-                        ...(item.availability ? {} : styles.mobileActionButtonDisabled),
-                      }}
-                      className="mobile-action-btn"
-                      onClick={handleAddToCart}
-                      title={item.availability ? 'Add to cart' : 'Unavailable'}
-                      disabled={!item.availability}
-                      aria-label={item.availability ? 'Add to cart' : 'Unavailable'}
-                    >
-                      <ShoppingCartIcon sx={{ fontSize: 14, color: '#ffffff' }} />
-                    </button>
-                  </>
+                  <button
+                    style={{
+                      ...styles.mobileActionButton,
+                      ...styles.mobileSelectionButton,
+                      ...(item.availability ? {} : styles.mobileActionButtonDisabled),
+                    }}
+                    className="mobile-action-btn"
+                    onClick={handleAddToCart}
+                    title={item.availability ? 'Sélectionner' : 'Indisponible'}
+                    disabled={!item.availability}
+                    aria-label={item.availability ? 'Sélectionner' : 'Indisponible'}
+                  >
+                    <ShoppingCartIcon sx={{ fontSize: 14, color: '#ffffff' }} />
+                    <span style={styles.mobileSelectionButtonText}>Sélectionner</span>
+                  </button>
                 )}
               </div>
             )}
@@ -859,7 +866,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
           />
           <div style={styles.popup}>
             <h3 style={styles.popupTitle}>
-              Choose {item.type === 'breakfast' ? 'options' : 'supplement'} for {item.name}
+              Choisir {item.type === 'breakfast' ? 'les options' : 'un supplement'} pour {item.name}
             </h3>
             {item.type === 'breakfast' && supplements.optionGroups?.length > 0 && (
               <div style={styles.popupOptionsContainer}>
@@ -872,9 +879,9 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                     }}
                   >
                     <div style={styles.groupTitle}>
-                      {group.title} {group.is_required ? '(Required)' : '(Optional)'}
+                      {group.title} {group.is_required ? '(Requis)' : '(Optionnel)'}
                       {group.max_selections > 0 && `, Max: ${group.max_selections}`}
-                      {validationErrors[group.id] && <span style={{ color: '#ef4444' }}> - Please select</span>}
+                      {validationErrors[group.id] && <span style={{ color: '#ef4444' }}> - Veuillez selectionner</span>}
                     </div>
                     {supplements.options
                       .filter((opt) => opt.group_id === group.id)
@@ -915,7 +922,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                 style={styles.popupSelect}
                 className="popup-select"
               >
-                <option value="0">No supplement</option>
+                <option value="0">Aucun supplement</option>
                 {supplements.options.map((supplement) => (
                   <option
                     key={supplement.supplement_id}
@@ -940,7 +947,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                       .some((g) => !selectedOptions[g.id] || selectedOptions[g.id].length === 0))
                 }
               >
-                Add to Cart
+                Sélectionner
               </button>
               <button
                 style={{ ...styles.popupButton, ...styles.cancelButton }}
@@ -951,7 +958,7 @@ function MenuItemCard({ item, onAddToCart, onView, isManager }) {
                   setValidationErrors({});
                 }}
               >
-                Cancel
+                Annuler
               </button>
             </div>
           </div>

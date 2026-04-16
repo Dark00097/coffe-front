@@ -622,7 +622,7 @@ function ProductDetails({ addToCart }) {
             whileTap={{ scale: 0.97 }}
           >
             <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-            {product.availability ? `Ajouter au panier Â· ${calculateTotalPrice()} ${currency}` : 'Indisponible'}
+            {product.availability ? `Sélectionner · ${calculateTotalPrice()} ${currency}` : 'Indisponible'}
           </motion.button>
         </motion.div>
 
@@ -658,5 +658,6 @@ function ProductDetails({ addToCart }) {
 }
 
 export default ProductDetails;
+
 
 
